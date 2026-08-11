@@ -1,0 +1,413 @@
+/* ==UserStyle==
+@name        Gmail dark mode CSS
+@namespace   github.com/victorrentea
+@version     1.15.0
+@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue
+@author      Victor
+==/UserStyle== */
+
+@-moz-document domain("mail.google.com") {
+
+  /* Compose button position */
+  div.dw div.nn {
+    position: absolute !important;
+    left: 16px !important;
+    right: auto !important;
+    bottom: 0 !important;
+  }
+
+  /* ===== DARK MODE ===== */
+  @media (prefers-color-scheme: dark) {
+
+    /* === 0. EMAIL LIST ROWS === */
+    tr.zA.zE { background-color:#3a3a3a !important; }
+    tr.zA.zE:hover { background-color:#484848 !important; }
+    .agJ.bjE, .agJ.aFx.bjE {
+      background-color:#aaaaaa !important;
+      border-left:3px solid #8ab4f8 !important;
+      border-radius:4px !important;
+    }
+
+    /* === 1. CONȚINUTUL EMAILULUI === */
+    .a3s { background-color:#1b1b1d !important; color:#d6d6d6 !important; }
+    .a3s :not(a) { color:#d6d6d6 !important; }
+    .a3s [style*="background"], .a3s [bgcolor] { background-color:transparent !important; }
+    .a3s a, .a3s a :not(img) { color:#8ab4f8 !important; }
+    .a3s blockquote, .a3s .gmail_quote { border-left-color:#5a5a5e !important; color:#b0b0b0 !important; }
+    .a3s img { border-radius:3px; background-color:#fafafa !important; }
+    .a3s pre, .a3s code { background-color:#2a2a2d !important; color:#e0e0e0 !important; }
+    .a3s img.an1, .a3s img[src*="notoemoji"], .a3s img[src*="fonts.gstatic.com/s/e/"] { background-color:#1b1b1d !important; }
+
+    /* === 2. SHELL / PANOUL DE CITIRE === */
+    .nH.ao9, .nH.a98, .ii.gt, .ii.gt > div, .adn.ads, .adn .gs, .nH.btDi4d, .nr.wR, .h7 { background-color:#1b1b1d !important; }
+
+    /* === 3. HEADER MESAJ (nume/email expeditor) === */
+    .gE.iv.gt, .gE.iv.gt *, .ha, .ha *, .gD, .go, .g3, .gK, .qu, .iw, .hb { color:#d6d6d6 !important; }
+    .go, .g3 { color:#9aa0a6 !important; }
+    .gD, .qu { color:#e8e8e8 !important; }
+    .nH.btDi4d, .nr.wR, .amn, .aoD.hx, .aoD.hx * { color:#d6d6d6 !important; }
+
+    /* === 4. STELUȚA + 5. SĂGEATA "show details" === */
+    .T-KT, .aXw.T-KT { opacity:1 !important; }
+    .T-KT::before, .aXw.T-KT::before { opacity:0.9 !important; }
+    .ajz { filter:invert(1) brightness(1.6) !important; opacity:1 !important; }
+    /* steluțe NE-bifate (listă inbox + header) → alb-gri ca iconițele; cea marcată (.T-KT-Jp) rămâne galbenă nativ.
+       brightness(0) normalizează ambele sprite-uri (alb în listă / negru în header) la negru, apoi invert(0.84) → gri 214 */
+    .T-KT:not(.T-KT-Jp)::before { filter:brightness(0) invert(0.84) !important; opacity:1 !important; }
+
+    /* === 6. FERESTRE COMPOSE + REPLY === */
+    .aaZ, .Ap, .I5, .IG, .aC2, .aoI, .aoP, .iN > .nH { background-color:#1b1b1d !important; color:#d6d6d6 !important; }
+    .l.m, .nHuJb, .YfAtle, .aDh, .GMN9Df { background-color:#2a2a2d !important; color:#d6d6d6 !important; }
+    .Am.Al.editable, .editable[role="textbox"], .Am.aiL.editable, .Ap .editable { background-color:#1b1b1d !important; color:#d6d6d6 !important; }
+    input[name="subjectbox"] { background-color:#1b1b1d !important; color:#d6d6d6 !important; }
+
+    /* === 7. CHIP-URI + INPUTURI DESTINATARI === */
+    .afV, .aGb, .agh, .aGb.RuSUmb { background-color:#1b1b1d !important; color:#e8e8e8 !important; border-color:#3a3a3c !important; }
+    .afV *, .aGb *, .agh * { color:#e8e8e8 !important; }
+    .GS, .vR, .vO, .aoD, .wO.nr { background-color:#1b1b1d !important; color:#d6d6d6 !important; }
+    .agP.aFx, input.agP, .vO input, textarea[name="to"], textarea[name="cc"], textarea[name="bcc"] { background-color:#1b1b1d !important; color:#e8e8e8 !important; }
+    .bFF.mS5Pff, .bFF { background-color:#1b1b1d !important; }
+
+    /* === 8. BADGE "X more" === */
+    .aDp { background-color:#2a3942 !important; color:#e8e8e8 !important; }
+
+    /* === 9. ICONIȚE TOOLBAR COMPOSE === */
+    .iN .vyF4Hb, .iN .aMZ, .aDh .vyF4Hb, .gU .vyF4Hb, .wG.J-Z-I .vyF4Hb { filter:invert(1) brightness(1.6) !important; }
+
+    /* === 10. DROPDOWN AUTOCOMPLETE === */
+    .afC, .afA, .afC.RuSUmb, .afA.RuSUmb { background-color:#1f1f22 !important; color:#d6d6d6 !important; border-color:#3a3a3c !important; }
+    .agJ, .agJ.aFx { background-color:#1f1f22 !important; color:#e8e8e8 !important; }
+    .agJ:hover, .agJ.aFx:hover, [role="option"]:hover { background-color:#2a3942 !important; }
+    /* item SELECTAT din sugestii (.bjE) era colorat #aaaaaa de sec.0 → text deschis pe fundal deschis = ilizibil; îl facem dark ca hover. Scopat pe [role=option] ca să nu atingă chip-urile de label din listă */
+    [role="option"].agJ.bjE, [role="option"].agJ.aFx.bjE { background-color:#2a3942 !important; }
+    .afC *, .afA *, .agJ * { color:#e8e8e8 !important; }
+
+    /* === 11. MENIURI GENERICE === */
+    .J-M, .J-M-ayU, .J-M.aX9, .b7.J-M { background-color:#1f1f22 !important; color:#d6d6d6 !important; border-color:#3a3a3c !important; }
+    .J-N, .J-N-Jz { background-color:#1f1f22 !important; color:#e8e8e8 !important; }
+    .J-N:hover, .J-N-JT { background-color:#2a3942 !important; }
+
+    /* === 12. BUTON "Aa" + TEXT TOOLBAR === */
+    .J-Z { color:#e8e8e8 !important; }
+    .J-Z .J-Z-axO, .J-Z-axO { background-color:#2a2a2d !important; color:#d6d6d6 !important; border-color:#3a3a3c !important; }
+
+    /* === 13. "Help me write" === */
+    .wG.J-Z-I.bDl .vyF4Hb, [aria-label*="Help me write" i] .vyF4Hb { color:#d6d6d6 !important; }
+    .wG.J-Z-I.bDl, [aria-label*="Help me write" i] { background-color:#3a3a3d !important; }
+
+    /* === 13b. "Describe your message" (Gemini compose bar) === */
+    .YfAtle, .YfAtle.kMEVYd, .nHuJb.QlRAxe {
+      background-color:#2a2a2d !important; border:1px solid #3a3a3c !important; color:#d6d6d6 !important; }
+    .Pv5YRd, .Pv5YRd.TIYGAd.UNQklc, .eOLdcc.weNqTc, .idpN8c.k6dJm, .LxpHxd {
+      color:#d6d6d6 !important; -webkit-text-fill-color:#d6d6d6 !important;
+      background-color:transparent !important; caret-color:#d6d6d6 !important; }
+
+    /* === 14. FUNDALURI ALBE RĂMASE === */
+    .aDj, .aDi, .iN .aoD.az9, .btC { background-color:transparent !important; }
+    .aC3 { background-color:#1b1b1d !important; } /* spacer footer reply, alb intermitent (.aDj.ahe) */
+    .HM .ahe:after { background:transparent !important; } /* linie albă #fff după meniul închis mesaj */
+
+    /* === 16. ELEMENTE HEADER COMPOSE ÎNCHISE === */
+    .aYF, .aYF * { color:#e8e8e8 !important; }
+    .Hl, .Hq, .Ha { filter:invert(1) brightness(1.6) !important; }
+    .gI, .gI * { color:#d6d6d6 !important; }
+
+    /* === 18. CHIP-URI DESTINATARI (fără teal, blend pe fundal închis) === */
+    .afV, .agh, .aGb, .ahz, .afV.afV, .agh.agh, .aGb.aGb, .ahz.ahz, .aGb.RuSUmb {
+      background-color:#1b1b1d !important; border-radius:6px !important; }
+    .afV, .ahz { border:1px solid #3a3a3c !important; }            /* border doar pe chip-ul interior */
+    .agh.agh, .aGb.aGb, .aGb.RuSUmb { border:none !important; }    /* fără chenar dublu pe wrappere */
+    .afV *, .agh *, .aGb *, .ahz * { color:#e8e8e8 !important; }
+    .afV .akl, .agh .akl, .aGb .akl { color:#e8e8e8 !important; }
+    .aoD.az9, .anm, .wO.nr.l1 { background-color:transparent !important; }
+    .afX, .ahz .afX { opacity:0.85 !important; filter:brightness(2) !important; }
+
+    /* === 19. INPUT DESTINATARI COMPOSE (text negru → deschis) === */
+    textarea.Ak, textarea.aiL, .Ak.aiL, textarea.aLF-aPX-My-JC-S { color:#e8e8e8 !important; -webkit-text-fill-color:#e8e8e8 !important; background-color:transparent !important; }
+    .aoD, .aoD.hl, .aoD.az6, .anm, .akl { color:#e8e8e8 !important; -webkit-text-fill-color:#e8e8e8 !important; }
+    .vR .vN, .vT, .GS .vM, span.vN { color:#e8e8e8 !important; }
+    .agP::placeholder, textarea.Ak::placeholder { color:#9aa0a6 !important; -webkit-text-fill-color:#9aa0a6 !important; }
+
+    /* === 20. INLINE REPLY/FORWARD BUTTONS (more visible) === */
+    .ams { background-color:#2a3942 !important; color:#e8e8e8 !important; border:1px solid #5a6b78 !important; border-radius:8px !important; }
+    .ams * { color:#e8e8e8 !important; -webkit-text-fill-color:#e8e8e8 !important; }
+    .ams::before, .ams svg, .ams img { filter:invert(1) brightness(1.8) !important; opacity:1 !important; }
+    .ams:hover { background-color:#33414d !important; border-color:#8ab4f8 !important; color:#ffffff !important; }
+    .ams:hover * { color:#ffffff !important; -webkit-text-fill-color:#ffffff !important; }
+
+    /* === 20b. TEXT REPLY/FORWARD mai deschis (eticheta e text-node direct în .ams) === */
+    .amn > .ams, span.ams { color:#f1f1f1 !important; -webkit-text-fill-color:#f1f1f1 !important; }
+
+    /* === 21. ATAȘAMENT (paperclip) → galben === */
+    img.gW, img.yE {
+      filter:brightness(0) saturate(100%) invert(82%) sepia(40%) saturate(900%) hue-rotate(358deg) brightness(102%) contrast(96%) !important;
+      opacity:1 !important; }
+
+    /* === 22. BARĂ COMPOSE — luminozitate iconițe consistentă === */
+    .J-Z-I .dv { filter:invert(1) brightness(1.6) !important; }                   /* "Aa" */
+    .J-Z-I-JW::before, .J-Z-I-KO::before { background-color:#2a2a2d !important; }  /* cerc activ alb → gri */
+    .J-JN-M-I img.Y1 { filter:invert(1) brightness(1.6) !important; }             /* "..." more options */
+    .oh.J-Z-I .og.T-I-J3 { filter:invert(1) brightness(1.6) !important; }         /* delete / trash */
+    .J-JN-M-I .J-JN-M-I-JG { filter:invert(1) brightness(1.6) !important; }       /* "..." more (GM3 real icon) + caret From; img.Y1 era display:none */
+
+    /* === 23. TAG "Inbox" în header subiect (fundal prea luminos) === */
+    .hN {
+      --cv-colored-label-bg-color:#2a2a2d !important;
+      --cv-colored-label-text-color:#e8e8e8 !important;
+      background-color:#2a2a2d !important; color:#e8e8e8 !important; }
+
+    /* === 24. BARĂ FORMATARE (Sans Serif/B/I/U…) → fundal închis === */
+    div[role="dialog"] div[role="toolbar"].J-Z {
+      background-color:#2a2a2d !important; border-top:1px solid rgba(255,255,255,0.12) !important; }
+    div[role="dialog"] div[role="toolbar"].J-Z .aaA,
+    div[role="dialog"] div[role="toolbar"].J-Z .J-Z-M-I-JG { filter:invert(1) brightness(1.6) !important; }
+    div[role="dialog"] div[role="toolbar"].J-Z [role="button"] { color:#e8eaed !important; }
+
+    /* === 25. CARD CONTACT (hovercard) — iframe cross-origin contacts.google.com; recolorat prin filter === */
+    iframe[id^="I__HC_"] { filter:invert(1) hue-rotate(180deg) !important; background-color:#1f1f22 !important; }
+    div[id^="C__HC_"] { background-color:#1f1f22 !important; border-radius:8px !important; }
+
+    /* === 26. ATAȘAMENTE — carduri download (email primit) + chip compose, fundal alb → închis === */
+    .aZo .aQy, .aZo .aSG, .aZo .aYy, .aZo .aYv { background-color:#2a2a2d !important; color:#e8e8e8 !important; }
+    .aZo .aQy { border:1px solid #44464a !important; }
+    .aZo .aYy { border-top:1px solid #44464a !important; }
+    .aZo .aV3, .aZo .aYp, .aZo .aQA, .aZo .aYz { color:#e8e8e8 !important; }
+    .dL { background-color:#2a2a2d !important; border:1px solid #44464a !important; color:#e8e8e8 !important; }
+    .dL .dO { color:#8ab4f8 !important; }   /* link nume fișier */
+    .dL .vq { color:#e8e8e8 !important; }   /* buton ✕ remove */
+
+    /* === 27. FUNDAL BODY + BORDER COMPOSE + SCROLLBARS (albul de pe margini venea de aici) === */
+    body { background-color:#1b1b1d !important; }
+    td.I5 { border-color:#1b1b1d !important; }   /* bordura ferestrei de compunere */
+    ::-webkit-scrollbar { width:12px; height:12px; }
+    ::-webkit-scrollbar-track { background:#1b1b1d; }
+    ::-webkit-scrollbar-thumb { background:#5f6368; border-radius:8px; border:2px solid #1b1b1d; }
+    ::-webkit-scrollbar-thumb:hover { background:#7a7d82; }
+    ::-webkit-scrollbar-corner { background:#1b1b1d; }
+
+    /* === 28. ATAȘAMENT inline (header "One attachment • Scanned by Gmail" + nume fișier) ===
+       Gmail dă text negru (rgb 34,34,34) pe header-ul și chip-ul de atașament din emailul primit →
+       invizibil pe fundal închis. Îl deschidem; link-ul Download (anchor) rămâne albastru nativ. */
+    .aVW.a5T, .aVW.a5T span, .a2H,
+    .eqJbab.cZD3Qb, .eqJbab.cZD3Qb span,
+    .aXK, .aXK span { color:#dfe1e5 !important; }
+    .aXK .aXL { color:#f1f1f1 !important; }   /* numele fișierului — un pic mai luminos (specificitate > .aXK span) */
+
+    /* === 29. BARĂ FORMATARE — fundal închis + iconițe albe + hover === */
+    [role="toolbar"] { background-color:#1f1f1f !important; }                       /* ambele rânduri toolbar */
+    [role="toolbar"] div[style*="background-image: url"] {                          /* iconițe url → invert alb */
+      filter:brightness(0) invert(1) !important; opacity:1 !important; }
+    .J-Z-I-JW, .J-Z-I-Je, .J-Z-I-Jp, .J-Z-I-KO { color:#ffffff !important; }        /* stare activ/pressed → text alb */
+    .btC .a1, .gU .a1 { color:#ffffff !important; opacity:1 !important; }           /* caption "Aa" + label toggle */
+    .gU .J-Z-I.J-Z-I-KO::before, .gU .J-Z-I::before,
+    .btC .J-Z-I.J-Z-I-KO::before, .btC .J-Z-I::before {                             /* hover overlay → highlight subtil */
+      background:rgba(255,255,255,0.15) !important; }
+    .J-Z-I-KO, .J-Z-I-Je, .J-Z-I-Jp, .J-Z-M-I-Kq { background-image:unset !important; }  /* fără gradient de inversat */
+
+    /* === 30. HOVER RÂND INBOX — butoane acțiune transparente === */
+    .bqY, .bqX { background-color:transparent !important; }                         /* containerul butoanelor */
+    .bqd.T-I-ax7, .bqc.T-I-ax7, .v6.T-I-ax7, .aZa > .T-I-ax7 {                       /* iconițe individuale */
+      box-shadow:none !important; background:transparent !important; }
+    .T-I-ax7.T-I-KO {                                                               /* stare hover/activ icoane */
+      background-color:transparent !important; background-image:none !important; border:none !important; }
+    .bqX:not(.pW):hover::before { background-color:rgba(255,255,255,0.12) !important; }  /* ripple rând → alb subtil */
+    .bqd.T-I-ax7::before, .bqc.T-I-ax7::before { background:rgba(255,255,255,0.15) !important; }
+
+    /* === 31. PANOU COMPOSE / REPLY — fundal transparent + border alb === */
+    table.aoP.HM, .adB table.aoP.HM { background-color:transparent !important; }    /* tabelul exterior (era alb din --gm3-sys-color-surface) */
+    td.aoY { background-color:transparent !important; }
+    .HM .I5, .adB .HM .I5 {                                                         /* celula interioară: border alb vizibil */
+      background-color:transparent !important; border:1px solid rgba(255,255,255,0.45) !important; }
+    .HM .I5:hover, .adB .HM .I5:hover {                                             /* border mai luminos pe hover */
+      border:1px solid rgba(255,255,255,0.6) !important; box-shadow:none !important; }
+    .HM .IG { background-color:transparent !important; border:none !important; }    /* rânduri wrapper interioare */
+    .HM .aDj, .adB .HM .aDj { border:none !important; }
+    div.ajR { background-color:#3a3a3d !important; }                                /* buton "···" more options → pill închis */
+    img.mK { filter:brightness(0) invert(1) !important; opacity:0.85 !important; }  /* săgeți Reply/Reply-all → alb */
+    .Am.aiL::-webkit-scrollbar { background-color:#2a2a2d !important; }             /* scrollbar întunecat în corp compose */
+    .Am.aiL::-webkit-scrollbar-thumb { background-color:#4a4a4d !important; }
+
+    /* === 32. CULORI INLINE EXPLICITE ÎN CORP COMPOSE/REPLY === */
+    /* Light text on dark backgrounds — fix explicit dark inline colors */
+    .Am.Al.editable *[style*="color: rgb(34, 34, 34)"],
+    .Am.Al.editable *[style*="color:rgb(34,34,34)"],
+    .Am.Al.editable *[style*="color: rgb(0, 0, 0)"],
+    .Am.Al.editable *[style*="color:rgb(0,0,0)"],
+    .Am.Al.editable *[style*="color: #000"],
+    .Am.Al.editable font[color="#000000"],
+    .Am.Al.editable font[color="black"] {
+      color: #e8eaed !important;
+    }
+
+    /* Dark text on white-background containers */
+    .Am.Al.editable [style*="background-color: rgb(255, 255, 255)"],
+    .Am.Al.editable [style*="background-color: rgb(255, 255, 255)"] * {
+      color: #222222 !important;
+    }
+
+    /* === 33. ETICHETE COMPOSE "From/To/Cc/Bcc" — gri #444746 aproape invizibil pe dark === */
+    .gO, .gQ { color:#c4c7c5 !important; }                          /* etichete From / To / Cc / Bcc */
+    .aB.gQ.pE, .aB.gQ.pB { color:#c4c7c5 !important; }              /* linkuri Cc / Bcc din rândul To */
+    .M9, .aoP, table.GS {                                           /* variabila la nivel container → moștenită de componentele care o folosesc */
+      --gm3-sys-color-on-surface-variant:#c4c7c5 !important; }
+
+    /* === 34. SNIPPET/PREVIEW TEXT în fire de discuție (thread) — text prea închis === */
+    div.iA.g6,
+    div.iA.g6 span {
+      color: rgba(255, 255, 255, 0.85) !important;
+    }
+
+    /* === 35. PAPERCLIP ATAȘAMENT → alb (suprascrie galbenul din secțiunea 21) === */
+    img.gW,
+    img.f.gW {
+      filter: brightness(0) invert(1) !important;
+      -webkit-filter: brightness(0) invert(1) !important;
+      opacity: 0.9 !important;
+    }
+
+    /* === 36. ETICHETA "Inbox" (chip .hO) → fundal gri + ✕ alb === */
+    div.hO {
+      background-color: rgb(42, 42, 45) !important;
+    }
+    div.hO::before {
+      color: #ffffff !important;
+      opacity: 1 !important;
+    }
+
+    /* === 37. "Summarise this email" pill (match Reply/Forward look) + reaction/emoji button vizibil === */
+    /* butonul "Summarise this email" → aceeași pastilă ca Reply/Reply all/Forward */
+    div.mNKakd.DjVd6c.WWUXZd.Upomde.e5Qt6b.jsI69c.ZhdUBb.gfbKJd[role="button"] {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      height: 36px !important;
+      min-height: 36px !important;
+      box-sizing: border-box !important;
+      padding: 0 16px 0 12px !important;
+      background-color: rgb(42, 57, 66) !important;
+      border: 0.909091px solid rgb(90, 107, 120) !important;
+      border-radius: 8px !important;
+      color: rgb(241, 241, 241) !important;
+    }
+    div.mNKakd.DjVd6c.WWUXZd.Upomde.e5Qt6b.jsI69c.ZhdUBb.gfbKJd .b4qJse {
+      color: rgb(241, 241, 241) !important;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+    }
+    div.mNKakd.DjVd6c.WWUXZd.Upomde.e5Qt6b.jsI69c.ZhdUBb.gfbKJd svg {
+      color: rgb(241, 241, 241) !important;
+    }
+    /* butonul reacție/emoji de lângă Reply/Forward → mai vizibil */
+    button.jWOS7-JX-I.jWOS7-JX-I-ql-ay5-ays.LS5phe[aria-label="Add reaction"] {
+      color: rgb(241, 241, 241) !important;
+      background-color: rgb(42, 57, 66) !important;
+      border: 0.909091px solid rgb(90, 107, 120) !important;
+      border-radius: 18px !important;
+      opacity: 1 !important;
+    }
+
+    /* === 38. BARĂ FORMATARE COMPOSE — iconițe + săgeți dropdown recolorate === */
+    /* Iconițele butoanelor: Bold, Italic, Underline, Text colour, Align, liste, indent, Quote, Strikethrough, Size */
+    div[aria-label^="Bold "] .aaA.aaB,
+    div[aria-label^="Italic "] .aaA.aaB,
+    div[aria-label^="Underline "] .aaA.aaB,
+    div[aria-label^="Text colour"] .aaA.aaB,
+    div[aria-label="Align"] .aaA.aaB,
+    div[aria-label^="Numbered list "] .aaA.aaB,
+    div[aria-label^="Bulleted list "] .aaA.aaB,
+    div[aria-label^="Indent less "] .aaA.aaB,
+    div[aria-label^="Indent more "] .aaA.aaB,
+    div[aria-label^="Quote "] .aaA.aaB,
+    div[aria-label^="Strikethrough "] .aaA.aaB,
+    div[aria-label^="Size "] .aaA.aaB {
+      filter: invert(0.8) !important;
+    }
+
+    /* Săgețile de dropdown: Font, Size, Formatting options */
+    div[aria-label^="Font "] .J-Z-M-I-JG,
+    div[aria-label^="Size "] .J-Z-M-I-JG,
+    div[aria-label="Formatting options"] .J-Z-M-I-JG {
+      filter: invert(0.8) !important;
+    }
+
+    /* Font/Size: elimină fundalul deschis, text gri corect */
+    div[aria-label^="Font "],
+    div[aria-label^="Font "] *,
+    div[aria-label^="Size "],
+    div[aria-label^="Size "] * {
+      background-color: transparent !important;
+    }
+    div[aria-label^="Font "] .J-Z-M-I-Jm {
+      color: #b5b5b5 !important;
+    }
+
+    /* Elimină ripple-ul albastru la focus/deschidere pe Font/Size */
+    div[aria-label^="Font "]::before,
+    div[aria-label^="Size "]::before {
+      background-color: transparent !important;
+    }
+
+    /* === 39. PANOURI INVITAȚIE CALENDAR — culoarea butoanelor Reply/Reply all/Forward === */
+    div.DC5CAd {
+      background-color: rgb(42, 57, 66) !important;
+      border-color: rgb(90, 107, 120) !important;
+    }
+    div.DC5CAd *:not(button):not(button *) {
+      color: rgb(232, 234, 237) !important;
+    }
+    div.DC5CAd a:not(button *) {
+      color: rgb(138, 180, 248) !important;
+    }
+
+    /* === 40. CORP COMPOSE/REPLY — familia de gri-uri închise Google inline (#202124 & co.) ===
+       Secțiunea 32 prindea doar negrul pur (#000 / rgb(0,0,0) / rgb(34,34,34)). Dar mail-urile
+       HTML — inclusiv cele generate de agenți sau lipite din alte clienți — pun de regulă gri-ul
+       standard Google #202124 (= rgb(32,33,36)) pe un <div> wrapper care înfășoară tot corpul.
+       .Am…editable are deja color:#d6d6d6 (sec. 6), dar stilul inline de pe wrapper bate regula
+       de pe container, iar toți copiii (<p>, <b>, <li>) moștenesc → corp negru-pe-negru la
+       compose/reply, cu doar link-urile lizibile.
+       Prindem întreaga familie de gri-uri închise, în ambele notații (hex + rgb) și cu/fără
+       spațiu după ":". Scopat pe .Am.editable ca să acopere și .Al și .aiL. */
+    .Am.editable [style*="color:#202124" i], .Am.editable [style*="color: #202124" i],
+    .Am.editable [style*="color:#1f1f1f" i], .Am.editable [style*="color: #1f1f1f" i],
+    .Am.editable [style*="color:#3c4043" i], .Am.editable [style*="color: #3c4043" i],
+    .Am.editable [style*="color:#5f6368" i], .Am.editable [style*="color: #5f6368" i],
+    .Am.editable [style*="color:#111" i],    .Am.editable [style*="color: #111" i],
+    .Am.editable [style*="color:#222" i],    .Am.editable [style*="color: #222" i],
+    .Am.editable [style*="color:#333" i],    .Am.editable [style*="color: #333" i],
+    .Am.editable [style*="color:rgb(32,33,36)"],  .Am.editable [style*="color: rgb(32, 33, 36)"],
+    .Am.editable [style*="color:rgb(60,64,67)"],  .Am.editable [style*="color: rgb(60, 64, 67)"],
+    .Am.editable [style*="color:rgb(95,99,104)"], .Am.editable [style*="color: rgb(95, 99, 104)"],
+    .Am.editable [style*="color:rgb(17,17,17)"],  .Am.editable [style*="color: rgb(17, 17, 17)"],
+    .Am.editable [style*="color:rgb(51,51,51)"],  .Am.editable [style*="color: rgb(51, 51, 51)"] {
+      color:#e8eaed !important; -webkit-text-fill-color:#e8eaed !important;
+    }
+    /* ancorele rămân albastre chiar dacă wrapper-ul era închis (nu moștenesc gri-ul de mai sus) */
+    .Am.editable a, .Am.editable a * {
+      color:#8ab4f8 !important; -webkit-text-fill-color:#8ab4f8 !important;
+    }
+
+  }
+
+  /* ===== LIGHT MODE ===== */
+  @media (prefers-color-scheme: light) {
+    tr.zA.zE { background-color:#e8f0fe !important; }
+    tr.zA.zE:hover { background-color:#d2e3fc !important; }
+    /* Gmail base CSS pune .zE { color:#fff } (text alb, pentru un fundal închis din altă parte);
+       pe fundalul nostru light-blue devine invizibil → forțăm text închis pe rândurile unread */
+    tr.zA.zE, tr.zA.zE td, tr.zA.zE span, tr.zA.zE div { color:#202124 !important; }
+    .agJ.bjE, .agJ.aFx.bjE {
+      background-color:#e8f0fe !important;
+      border-left:3px solid #1a73e8 !important;
+      border-radius:4px !important;
+    }
+  }
+
+  /* ===== GLOBAL (shortcut hints + hide right pane) ===== */
+  .T-I.T-I-KE.L3::after { content:" (C)" !important; }
+  .aUx { display:none !important; } /* bară dreapta companion (Calendar/Keep/Tasks…); .nH.rightPane nu mai există */
+  .aim a[href$="#inbox"] .nU::after, .TO[data-tooltip="Inbox"] .nU::after { opacity:0.6; font-size:11px; content:" (g i)" !important; }
+  .aim a[href$="#sent"] .nU::after, .TO[data-tooltip="Sent"] .nU::after { opacity:0.6; font-size:11px; content:" (g t)" !important; }
+  .aim a[href$="#all"] .nU::after, .TO[data-tooltip="All Mail"] .nU::after, .TO[data-tooltip="All mail"] .nU::after { opacity:0.6; font-size:11px; content:" (g a)" !important; }
+
+}
