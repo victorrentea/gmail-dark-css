@@ -22,18 +22,31 @@ I will ask you to modify the Gmail CSS / add CSS snippets **repeatedly over time
 
 ## Al doilea consumator: extensia Chrome
 
-Din 2 sep 2026 acest fișier e injectat și de extensia **Gmail Victor Addons**
-(`~/workspace/gmail-victor-addons`), care înlocuiește Stylus. Extensia NU citește
-`gmail.user.css` direct — `@-moz-document` nu există în Chrome și ar arunca tot
-blocul — ci ține o conversie generată. După orice modificare aici:
+Din 2 sep 2026 fișierul ăsta e injectat și de extensia **Gmail Victor Addons**
+(`~/workspace/gmail-victor-addons`), care înlocuiește Stylus.
+
+**Editarea e live acolo: salvezi, dai refresh pe Gmail, vezi.** Fără bump de
+`@version`, fără Reload pe extensie — daemonul (`127.0.0.1:8931/css`) recitește
+fișierul de pe disc la fiecare cerere și desface singur `@-moz-document`, care
+în Chrome nu există și ar arunca tot blocul.
+
+Bump-ul de `@version` rămâne obligatoriu **doar pentru Stylus**, care refuză un
+corp schimbat sub aceeași versiune. Cât timp mai ții și stilul din Stylus activ,
+regula de mai sus se aplică — dar ține pornit unul singur, altfel editezi într-o
+copie și pictează cealaltă.
+
+Înainte de commit în extensie, împrospătează plasa de siguranță (copia folosită
+când daemonul tace):
 
 ```bash
-cd ~/workspace/gmail-victor-addons && ./sync-dark-css.sh   # regenerează extension/gmail-dark.css
+cd ~/workspace/gmail-victor-addons && ./sync-dark-css.sh
 ```
 
-apoi commit în ambele repo-uri și **Reload** pe extensie în `chrome://extensions`.
-Pasul cu Stylus (push + Check for update) rămâne valabil doar cât timp stilul
-Stylus e încă activ; ține unul singur pornit, altfel nu mai știi care pictează.
+Ce pictează chiar acum se citește din pagină:
+
+```js
+document.getElementById('vr-gmail-dark').dataset   // {source, version}
+```
 
 ## Repo context
 
