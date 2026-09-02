@@ -1,8 +1,8 @@
 /* ==UserStyle==
 @name        Gmail dark mode CSS
 @namespace   github.com/victorrentea
-@version     1.22.0
-@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body no longer flattened to one grey: it is now lightness-inverted the way the Gmail Android app does it (invert + hue-rotate, calibrated against the phone to #1b1b1b background / #ffffff text), so an email keeps its own colours and no background can ever survive under light text; search highlight left to the inversion inside the body and restored to Gmail yellow + dark text in the chrome
+@version     1.23.0
+@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body no longer flattened to one grey: it is now lightness-inverted the way the Gmail Android app does it (invert + hue-rotate, calibrated against the phone to #1b1b1b background / #ffffff text), so an email keeps its own colours and no background can ever survive under light text; search highlight left to the inversion inside the body and restored to Gmail yellow + dark text in the chrome; the compose/reply body inverted the same way, retiring the four successive whitelists of dark inline colours (sections 32, 40, 41, 42) that existed only to fight it
 @author      Victor
 ==/UserStyle== */
 
@@ -13,7 +13,7 @@
        getComputedStyle(document.documentElement).getPropertyValue('--vr-css-version')
      Util ca să verifici că Stylus chiar a tras ultimul push, nu că "pare că merge".
      A SE ACTUALIZA odată cu @version din header. */
-  :root { --vr-css-version: "1.22.0" !important; }
+  :root { --vr-css-version: "1.23.0" !important; }
 
   /* Compose button position */
   div.dw div.nn {
@@ -97,7 +97,6 @@
     /* === 6. FERESTRE COMPOSE + REPLY === */
     .aaZ, .Ap, .I5, .IG, .aC2, .aoI, .aoP, .iN > .nH { background-color:#1b1b1d !important; color:#d6d6d6 !important; }
     .l.m, .nHuJb, .YfAtle, .aDh, .GMN9Df { background-color:#2a2a2d !important; color:#d6d6d6 !important; }
-    .Am.Al.editable, .editable[role="textbox"], .Am.aiL.editable, .Ap .editable { background-color:#1b1b1d !important; color:#d6d6d6 !important; }
     input[name="subjectbox"] { background-color:#1b1b1d !important; color:#d6d6d6 !important; }
 
     /* === 7. CHIP-URI + INPUTURI DESTINATARI === */
@@ -263,26 +262,13 @@
     .HM .aDj, .adB .HM .aDj { border:none !important; }
     div.ajR { background-color:#3a3a3d !important; }                                /* buton "···" more options → pill închis */
     img.mK { filter:brightness(0) invert(1) !important; opacity:0.85 !important; }  /* săgeți Reply/Reply-all → alb */
-    .Am.aiL::-webkit-scrollbar { background-color:#2a2a2d !important; }             /* scrollbar întunecat în corp compose */
-    .Am.aiL::-webkit-scrollbar-thumb { background-color:#4a4a4d !important; }
-
-    /* === 32. CULORI INLINE EXPLICITE ÎN CORP COMPOSE/REPLY === */
-    /* Light text on dark backgrounds — fix explicit dark inline colors */
-    .Am.Al.editable *[style*="color: rgb(34, 34, 34)"],
-    .Am.Al.editable *[style*="color:rgb(34,34,34)"],
-    .Am.Al.editable *[style*="color: rgb(0, 0, 0)"],
-    .Am.Al.editable *[style*="color:rgb(0,0,0)"],
-    .Am.Al.editable *[style*="color: #000"],
-    .Am.Al.editable font[color="#000000"],
-    .Am.Al.editable font[color="black"] {
-      color: #e8eaed !important;
-    }
-
-    /* Dark text on white-background containers */
-    .Am.Al.editable [style*="background-color: rgb(255, 255, 255)"],
-    .Am.Al.editable [style*="background-color: rgb(255, 255, 255)"] * {
-      color: #222222 !important;
-    }
+    /* Scrollbar-ul e pictat ÎN interiorul corpului de compose, deci trece și el
+       prin inversiunea din secțiunea 46. Valorile de aici sunt cele de DINAINTE
+       de filtru: f(in) = ((255-in) - 127.5)*0.82 + 127.5, apoi *1.18 — #f0f0f0
+       iese ~#2a2a2a, #cecece iese ~#4a4a4a. Scrise direct #2a2a2d, ar fi ieșit
+       două dungi albe. */
+    .Am.aiL::-webkit-scrollbar { background-color:#f0f0f0 !important; }
+    .Am.aiL::-webkit-scrollbar-thumb { background-color:#cecece !important; }
 
     /* === 33. ETICHETE COMPOSE "From/To/Cc/Bcc" — gri #444746 aproape invizibil pe dark === */
     .gO, .gQ { color:#c4c7c5 !important; }                          /* etichete From / To / Cc / Bcc */
@@ -398,108 +384,6 @@
       color: rgb(138, 180, 248) !important;
     }
 
-    /* === 40. CORP COMPOSE/REPLY — familia de gri-uri închise Google inline (#202124 & co.) ===
-       Secțiunea 32 prindea doar negrul pur (#000 / rgb(0,0,0) / rgb(34,34,34)). Dar mail-urile
-       HTML — inclusiv cele generate de agenți sau lipite din alte clienți — pun de regulă gri-ul
-       standard Google #202124 (= rgb(32,33,36)) pe un <div> wrapper care înfășoară tot corpul.
-       .Am…editable are deja color:#d6d6d6 (sec. 6), dar stilul inline de pe wrapper bate regula
-       de pe container, iar toți copiii (<p>, <b>, <li>) moștenesc → corp negru-pe-negru la
-       compose/reply, cu doar link-urile lizibile.
-       Prindem întreaga familie de gri-uri închise, în ambele notații (hex + rgb) și cu/fără
-       spațiu după ":". Scopat pe .Am.editable ca să acopere și .Al și .aiL. */
-    .Am.editable [style*="color:#202124" i], .Am.editable [style*="color: #202124" i],
-    .Am.editable [style*="color:#1f1f1f" i], .Am.editable [style*="color: #1f1f1f" i],
-    .Am.editable [style*="color:#3c4043" i], .Am.editable [style*="color: #3c4043" i],
-    .Am.editable [style*="color:#5f6368" i], .Am.editable [style*="color: #5f6368" i],
-    .Am.editable [style*="color:#111" i],    .Am.editable [style*="color: #111" i],
-    .Am.editable [style*="color:#222" i],    .Am.editable [style*="color: #222" i],
-    .Am.editable [style*="color:#333" i],    .Am.editable [style*="color: #333" i],
-    .Am.editable [style*="color:#444" i],    .Am.editable [style*="color: #444" i],
-    .Am.editable [style*="color:#1a1a1a" i], .Am.editable [style*="color: #1a1a1a" i],
-    .Am.editable [style*="color:#0f0f0f" i], .Am.editable [style*="color: #0f0f0f" i],
-    .Am.editable [style*="color:#121212" i], .Am.editable [style*="color: #121212" i],
-    .Am.editable [style*="color:#212121" i], .Am.editable [style*="color: #212121" i],
-    .Am.editable [style*="color:#242424" i], .Am.editable [style*="color: #242424" i],
-    .Am.editable [style*="color:rgb(26,26,26)"],  .Am.editable [style*="color: rgb(26, 26, 26)"],
-    .Am.editable [style*="color:rgb(33,33,33)"],  .Am.editable [style*="color: rgb(33, 33, 33)"],
-    .Am.editable [style*="color:rgb(32,33,36)"],  .Am.editable [style*="color: rgb(32, 33, 36)"],
-    .Am.editable [style*="color:rgb(60,64,67)"],  .Am.editable [style*="color: rgb(60, 64, 67)"],
-    .Am.editable [style*="color:rgb(95,99,104)"], .Am.editable [style*="color: rgb(95, 99, 104)"],
-    .Am.editable [style*="color:rgb(17,17,17)"],  .Am.editable [style*="color: rgb(17, 17, 17)"],
-    .Am.editable [style*="color:rgb(51,51,51)"],  .Am.editable [style*="color: rgb(51, 51, 51)"] {
-      color:#e8eaed !important; -webkit-text-fill-color:#e8eaed !important;
-    }
-    /* ancorele rămân albastre chiar dacă wrapper-ul era închis (nu moștenesc gri-ul de mai sus) */
-    .Am.editable a, .Am.editable a * {
-      color:#8ab4f8 !important; -webkit-text-fill-color:#8ab4f8 !important;
-    }
-
-    /* === 41. CORP COMPOSE/REPLY — WRAPPER CU ORICE `color` INLINE (fix agnostic de hex) ===
-       Secțiunile 32 și 40 merg pe listă albă de culori: prind negrul pur, apoi familia de gri-uri
-       Google. Problema e că lista nu se termină niciodată — un mail HTML scris de un agent (sau
-       lipit din alt client) poate pune la fel de bine #1a1a1a, #0f0f0f sau orice alt aproape-negru,
-       și atunci corpul redevine negru-pe-negru, cu doar link-urile lizibile. S-a întâmplat exact
-       așa cu un draft generat cu `color:#1a1a1a` pe div-ul wrapper.
-
-       Aici nu ne mai uităm la CE culoare e, ci la UNDE e pusă: pe wrapper-ul care înfășoară tot
-       corpul (primele 2 niveluri sub .Am.editable). O culoare pusă acolo e, prin definiție,
-       culoarea implicită a textului mailului — deci în dark mode trebuie să fie deschisă, indiferent
-       ce a scris expeditorul. Culorile intenționate (un roșu de avertisment pe un <span> îngropat)
-       stau mai adânc și rămân neatinse.
-
-       Detalii de selector, ambele importante:
-       - `;color:` / `; color:` / `^="color:"` în loc de `color:` — altfel s-ar potrivi și
-         `background-color:`, și am albi textul peste un fundal alb.
-       - `:not([style*="background"])` — lasă intactă regula din secțiunea 32 care pune text închis
-         pe containerele cu fundal alb explicit. */
-    .Am.editable > *[style*=";color:" i]:not([style*="background" i]),
-    .Am.editable > *[style*="; color:" i]:not([style*="background" i]),
-    .Am.editable > *[style^="color:" i]:not([style*="background" i]),
-    .Am.editable > * > *[style*=";color:" i]:not([style*="background" i]),
-    .Am.editable > * > *[style*="; color:" i]:not([style*="background" i]),
-    .Am.editable > * > *[style^="color:" i]:not([style*="background" i]) {
-      color:#e8eaed !important; -webkit-text-fill-color:#e8eaed !important;
-    }
-
-    /* Re-afirmă ancorele DUPĂ secțiunea 41: regula de mai sus are aceeași specificitate ca cea de
-       la finalul secțiunii 40, deci fără repetarea asta un <a> aflat chiar pe primul nivel ar
-       ieși gri-deschis în loc de albastru. */
-    .Am.editable a, .Am.editable a * {
-      color:#8ab4f8 !important; -webkit-text-fill-color:#8ab4f8 !important;
-    }
-
-    /* === 42. CONTAINERE CU FUNDAL ALB EXPLICIT — text închis (completează secțiunea 32) ===
-       Bug găsit testând secțiunea 41, dar mai vechi decât ea: secțiunea 32 apără containerele cu
-       fundal alb doar în notația `background-color: rgb(255, 255, 255)`. Un mail care scrie
-       `background-color:#ffffff` nu era prins, în schimb `color:#333333` de pe el era prins de
-       secțiunea 40 → text deschis pe fundal alb, la fel de ilizibil ca problema pe care o rezolvăm.
-       Aici acoperim și notația hex (`#fff` prinde și `#ffffff`) și shorthand-ul `background:`.
-       Vine ULTIMA în blocul dark, deci bate atât secțiunea 40 cât și 41.
-       Link-urile primesc albastrul de light mode — #8ab4f8 pe alb are contrast prea slab. */
-    .Am.editable [style*="background-color:#fff" i],
-    .Am.editable [style*="background-color: #fff" i],
-    .Am.editable [style*="background:#fff" i],
-    .Am.editable [style*="background: #fff" i],
-    .Am.editable [style*="background-color:rgb(255,255,255)"],
-    .Am.editable [style*="background-color: rgb(255, 255, 255)"],
-    .Am.editable [style*="background-color:#fff" i] *:not(a),
-    .Am.editable [style*="background-color: #fff" i] *:not(a),
-    .Am.editable [style*="background:#fff" i] *:not(a),
-    .Am.editable [style*="background: #fff" i] *:not(a),
-    .Am.editable [style*="background-color:rgb(255,255,255)"] *:not(a),
-    .Am.editable [style*="background-color: rgb(255, 255, 255)"] *:not(a) {
-      color:#202124 !important; -webkit-text-fill-color:#202124 !important;
-    }
-    .Am.editable [style*="background-color:#fff" i] a,
-    .Am.editable [style*="background-color: #fff" i] a,
-    .Am.editable [style*="background:#fff" i] a,
-    .Am.editable [style*="background: #fff" i] a,
-    .Am.editable [style*="background-color:rgb(255,255,255)"] a,
-    .Am.editable [style*="background-color: rgb(255, 255, 255)"] a {
-      color:#1a73e8 !important; -webkit-text-fill-color:#1a73e8 !important;
-    }
-
-
     /* === 43. HIGHLIGHT REZULTATE CĂUTARE (span.il) — doar în chrome-ul Gmail ===
        Gmail marchează termenul căutat cu o singură regulă proprie:
          .id .il { background: rgb(253,226,147); color: rgb(34,34,34); }
@@ -567,6 +451,38 @@
       fill: rgb(241, 241, 241) !important;
     }
 
+
+    /* === 46. CORP COMPOSE/REPLY — aceeași inversiune ca la citit ===
+       Corpul editabil e același HTML ca cel din secțiunea 1: citatul mailului la
+       care răspunzi, semnătura, ce lipești din alt client. Îl tratăm identic,
+       altfel același mail arată într-un fel când îl citești și în alt fel când
+       apeși Reply.
+
+       Asta face inutile secțiunile 32, 40, 41 și 42, care au fost șterse: erau
+       patru liste albe succesive de culori inline închise (#000, familia de
+       gri-uri Google, apoi „orice hex pus pe wrapper", apoi containerele cu
+       fundal alb), fiecare adăugată fiindcă precedenta scăpa un caz. Lista aia
+       nu se termina niciodată, fiindcă problema nu era CE culoare pune
+       expeditorul, ci că noi pictam text deschis peste fundalul lui.
+       Inversiunea n-are cazuri de scăpat: negru-pe-alb devine alb-pe-negru,
+       indiferent de notație.
+
+       `background-color:#ffffff` NU e o greșeală — e valoarea de DINAINTE de
+       filtru, care iese #1b1b1b, exact fundalul din secțiunea 1. */
+    .Am.editable,
+    .Am.Al.editable,
+    .Am.aiL.editable,
+    .editable[role="textbox"],
+    .Ap .editable {
+      background-color: #ffffff !important;
+      color: #0d0d0d !important;
+      filter: invert(1) hue-rotate(180deg) contrast(0.82) brightness(1.18) !important;
+    }
+
+    /* imaginile lipite și cele din citat ies nemodificate, ca în secțiunea 1 */
+    .Am.editable img, .Am.editable video, .Am.editable canvas {
+      filter: brightness(0.847) contrast(1.22) hue-rotate(180deg) invert(1) !important;
+    }
 
   }
 
