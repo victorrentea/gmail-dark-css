@@ -1,8 +1,8 @@
 /* ==UserStyle==
 @name        Gmail dark mode CSS
 @namespace   github.com/victorrentea
-@version     1.19.0
-@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + --vr-css-version probe for verifying which version is live
+@version     1.20.0
+@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live
 @author      Victor
 ==/UserStyle== */
 
@@ -13,7 +13,7 @@
        getComputedStyle(document.documentElement).getPropertyValue('--vr-css-version')
      Util ca să verifici că Stylus chiar a tras ultimul push, nu că "pare că merge".
      A SE ACTUALIZA odată cu @version din header. */
-  :root { --vr-css-version: "1.19.0" !important; }
+  :root { --vr-css-version: "1.20.0" !important; }
 
   /* Compose button position */
   div.dw div.nn {
@@ -500,6 +500,43 @@
       color: #ffdcc2 !important;
       -webkit-text-fill-color: #ffdcc2 !important;
       background-color: transparent !important;
+    }
+
+
+    /* === 44. CHIP-URI SMART ACTION ("Add to Calendar" & co.) — pastilă albă pe dark ===
+       Gmail pune acțiunile sugerate din header-ul mesajului într-un
+       `div[role="toolbar"].afdZW`, iar pastila e primul span copil: fundal
+       rgb(240,244,249) cu text rgb(31,31,31) și iconiță SVG neagră — adică o
+       pată albă în plin dark mode.
+       Recolorat exact ca pastila "Summarise this email" din secțiunea 37, ca
+       cele două butoane vecine să nu arate ca din două aplicații diferite.
+       Forma (border-radius 16px) rămâne a Gmail-ului: s-a cerut culoarea.
+
+       Doi selectori pentru același lucru, dinadins:
+         - `:has(> span > button[aria-label])` e ancorat pe STRUCTURĂ, deci
+           supraviețuiește rotației claselor ofuscate. Nu prinde toolbar-ul
+           principal al listei (`div.G6`), unde butoanele sunt `div[role=button]`,
+           nu `<button>` — verificat în pagină, nu presupus.
+         - `.afdZW` e plasa de rezervă, pentru cazul în care `:has` nu se aplică. */
+    div[role="toolbar"] > span:has(> span > button[aria-label]),
+    div.afdZW[role="toolbar"] > span {
+      background: rgb(42, 57, 66) !important;
+      background-color: rgb(42, 57, 66) !important;
+      border: 0.909091px solid rgb(90, 107, 120) !important;
+      box-sizing: border-box !important;
+    }
+    /* eticheta + iconița: SVG-ul își ia culoarea din `fill`, nu din `color` */
+    div[role="toolbar"] > span:has(> span > button[aria-label]) span,
+    div[role="toolbar"] > span:has(> span > button[aria-label]) button,
+    div.afdZW[role="toolbar"] span,
+    div.afdZW[role="toolbar"] button {
+      color: rgb(241, 241, 241) !important;
+    }
+    div[role="toolbar"] > span:has(> span > button[aria-label]) svg,
+    div[role="toolbar"] > span:has(> span > button[aria-label]) svg path,
+    div.afdZW[role="toolbar"] svg,
+    div.afdZW[role="toolbar"] svg path {
+      fill: rgb(241, 241, 241) !important;
     }
 
   }
