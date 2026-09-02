@@ -20,6 +20,21 @@ I will ask you to modify the Gmail CSS / add CSS snippets **repeatedly over time
    `https://raw.githubusercontent.com/victorrentea/gmail-dark-css/master/gmail.user.css`
    (≈5 min CDN cache) on its own 24h schedule, or immediately via **Check for update**.
 
+## Al doilea consumator: extensia Chrome
+
+Din 2 sep 2026 acest fișier e injectat și de extensia **Gmail Victor Addons**
+(`~/workspace/gmail-smart-search`), care înlocuiește Stylus. Extensia NU citește
+`gmail.user.css` direct — `@-moz-document` nu există în Chrome și ar arunca tot
+blocul — ci ține o conversie generată. După orice modificare aici:
+
+```bash
+cd ~/workspace/gmail-smart-search && ./sync-dark-css.sh   # regenerează extension/gmail-dark.css
+```
+
+apoi commit în ambele repo-uri și **Reload** pe extensie în `chrome://extensions`.
+Pasul cu Stylus (push + Check for update) rămâne valabil doar cât timp stilul
+Stylus e încă activ; ține unul singur pornit, altfel nu mai știi care pictează.
+
 ## Repo context
 
 Public on purpose — Stylus cannot send credentials, so a private repo's raw URL 404s. Keep it free
