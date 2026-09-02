@@ -1,8 +1,8 @@
 /* ==UserStyle==
 @name        Gmail dark mode CSS
 @namespace   github.com/victorrentea
-@version     1.20.0
-@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live
+@version     1.21.0
+@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body: every leftover background flattened (the old [style*="background"] filter was case-sensitive, so Outlook-generated BACKGROUND-COLOR:#feffff survived and painted a white block under light-grey text)
 @author      Victor
 ==/UserStyle== */
 
@@ -13,7 +13,7 @@
        getComputedStyle(document.documentElement).getPropertyValue('--vr-css-version')
      Util ca să verifici că Stylus chiar a tras ultimul push, nu că "pare că merge".
      A SE ACTUALIZA odată cu @version din header. */
-  :root { --vr-css-version: "1.20.0" !important; }
+  :root { --vr-css-version: "1.21.0" !important; }
 
   /* Compose button position */
   div.dw div.nn {
@@ -38,7 +38,7 @@
     /* === 1. CONȚINUTUL EMAILULUI === */
     .a3s { background-color:#1b1b1d !important; color:#d6d6d6 !important; }
     .a3s :not(a) { color:#d6d6d6 !important; }
-    .a3s [style*="background"], .a3s [bgcolor] { background-color:transparent !important; }
+    .a3s [style*="background" i], .a3s [bgcolor] { background-color:transparent !important; }
     .a3s a, .a3s a :not(img) { color:#8ab4f8 !important; }
     .a3s blockquote, .a3s .gmail_quote { border-left-color:#5a5a5e !important; color:#b0b0b0 !important; }
     .a3s img { border-radius:3px; background-color:#fafafa !important; }
@@ -538,6 +538,27 @@
     div.afdZW[role="toolbar"] svg path {
       fill: rgb(241, 241, 241) !important;
     }
+
+    /* === 45. CORPUL MESAJULUI — ORICE FUNDAL RĂMAS DEVINE TRANSPARENT ===
+       Simptom: un mail cu text gri-deschis (#d6d6d6, pus de secțiunea 1) pe un
+       dreptunghi ALB — ilizibil. Exemplu real: newsletter-ul ICHB/my-educare,
+       unde `<td>`-ul cu tot textul are
+         style="…;BACKGROUND-COLOR:#feffff"
+       Cauza: filtrul din secțiunea 1 era `[style*="background"]`, iar potrivirea
+       pe substring în selectorii de atribut e CASE-SENSITIVE. HTML-ul generat de
+       Outlook scrie proprietățile cu MAJUSCULE, deci `BACKGROUND-COLOR` nu se
+       potrivea și fundalul alb al emailului supraviețuia. (Am pus `i` acolo.)
+
+       Aici e plasa generală: filtrul pe atribut nu prinde oricum fundalurile
+       venite dintr-un `<style>` din email — Gmail le rescrie în reguli pe clase
+       (`.m_-123…`), fără niciun `style=` pe element. Regula de mai jos le acoperă
+       pe toate, indiferent de notație.
+
+       Specificitatea e aleasă dinadins mică — `.a3s *` e (0,1,0) — ca tot ce
+       colorăm noi intenționat înăuntru să câștige fără efort:
+         `.a3s img` / `.a3s pre` / `.a3s code` = (0,1,1),
+         `.a3s span.il` (highlight-ul de căutare, secțiunea 43) = (0,2,1). */
+    .a3s * { background-color: transparent !important; }
 
   }
 
