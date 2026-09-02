@@ -23,12 +23,12 @@ I will ask you to modify the Gmail CSS / add CSS snippets **repeatedly over time
 ## Al doilea consumator: extensia Chrome
 
 Din 2 sep 2026 acest fișier e injectat și de extensia **Gmail Victor Addons**
-(`~/workspace/gmail-smart-search`), care înlocuiește Stylus. Extensia NU citește
+(`~/workspace/gmail-victor-addons`), care înlocuiește Stylus. Extensia NU citește
 `gmail.user.css` direct — `@-moz-document` nu există în Chrome și ar arunca tot
 blocul — ci ține o conversie generată. După orice modificare aici:
 
 ```bash
-cd ~/workspace/gmail-smart-search && ./sync-dark-css.sh   # regenerează extension/gmail-dark.css
+cd ~/workspace/gmail-victor-addons && ./sync-dark-css.sh   # regenerează extension/gmail-dark.css
 ```
 
 apoi commit în ambele repo-uri și **Reload** pe extensie în `chrome://extensions`.
