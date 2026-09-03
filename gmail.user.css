@@ -1,8 +1,8 @@
 /* ==UserStyle==
 @name        Gmail dark mode CSS
 @namespace   github.com/victorrentea
-@version     1.24.0
-@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body no longer flattened to one grey: it is now lightness-inverted the way the Gmail Android app does it (invert + hue-rotate, calibrated against the phone to #1b1b1b background / #ffffff text), so an email keeps its own colours and no background can ever survive under light text; search highlight left to the inversion inside the body and restored to Gmail yellow + dark text in the chrome; the compose/reply body inverted the same way, retiring the four successive whitelists of dark inline colours (sections 32, 40, 41, 42) that existed only to fight it + emoji/images in an inline reply body no longer negated: the counter-filter selector list now mirrors the inverted-body list (a threaded reply body is `.editable[role="textbox"]` without `.Am`)
+@version     1.25.0
+@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body no longer flattened to one grey: it is now lightness-inverted the way the Gmail Android app does it (invert + hue-rotate, calibrated against the phone to #1b1b1b background / #ffffff text), so an email keeps its own colours and no background can ever survive under light text; search highlight left to the inversion inside the body and restored to Gmail yellow + dark text in the chrome; the compose/reply body inverted the same way, retiring the four successive whitelists of dark inline colours (sections 32, 40, 41, 42) that existed only to fight it + compose/reply body: the inversion was narrowed to the quoted part only, because typed emoji are colour-font GLYPHS (not images) and no CSS counter-filter can reach them — they came out negated; the area you type in is painted the classic way again (light text, lightened inline colours, blue links)
 @author      Victor
 ==/UserStyle== */
 
@@ -13,7 +13,7 @@
        getComputedStyle(document.documentElement).getPropertyValue('--vr-css-version')
      Util ca să verifici că Stylus chiar a tras ultimul push, nu că "pare că merge".
      A SE ACTUALIZA odată cu @version din header. */
-  :root { --vr-css-version: "1.23.0" !important; }
+  :root { --vr-css-version: "1.25.0" !important; }
 
   /* Compose button position */
   div.dw div.nn {
@@ -452,46 +452,58 @@
     }
 
 
-    /* === 46. CORP COMPOSE/REPLY — aceeași inversiune ca la citit ===
-       Corpul editabil e același HTML ca cel din secțiunea 1: citatul mailului la
-       care răspunzi, semnătura, ce lipești din alt client. Îl tratăm identic,
-       altfel același mail arată într-un fel când îl citești și în alt fel când
-       apeși Reply.
+    /* === 46. CORP COMPOSE/REPLY — inversiune DOAR pe citat, nu pe ce scrii tu ===
+       Prima versiune inversa tot corpul editabil, ca secțiunea 1. Arăta bine,
+       dar negativa emoji-urile: în draft un emoji e un GLIF de font color
+       (Apple Color Emoji), nu o imagine, deci contra-filtrul de pe `img` nu-l
+       prinde — și din CSS nu ai cum să selectezi un glif. Din același motiv
+       emoji-ul arăta corect în mailul deja trimis: Gmail îl convertește la
+       trimitere în `<img goomoji>`, care e prins de contra-filtru. (Verificat
+       în Chrome pe 4 sep 2026: emoji-imagine ✓ / emoji-text ✗.)
 
-       Asta face inutile secțiunile 32, 40, 41 și 42, care au fost șterse: erau
-       patru liste albe succesive de culori inline închise (#000, familia de
-       gri-uri Google, apoi „orice hex pus pe wrapper", apoi containerele cu
-       fundal alb), fiecare adăugată fiindcă precedenta scăpa un caz. Lista aia
-       nu se termina niciodată, fiindcă problema nu era CE culoare pune
-       expeditorul, ci că noi pictam text deschis peste fundalul lui.
-       Inversiunea n-are cazuri de scăpat: negru-pe-alb devine alb-pe-negru,
-       indiferent de notație.
-
-       `background-color:#ffffff` NU e o greșeală — e valoarea de DINAINTE de
-       filtru, care iese #1b1b1b, exact fundalul din secțiunea 1. */
+       Așa că inversăm doar CITATUL — partea scrisă de altcineva, unde chiar nu
+       știm ce culori vin — și lăsăm zona în care scrii tu pictată clasic.
+       Emoji-urile tastate stau în afara regiunii inversate, deci ies corect. */
     .Am.editable,
     .Am.Al.editable,
     .Am.aiL.editable,
     .editable[role="textbox"],
     .Ap .editable {
+      background-color: transparent !important;
+      color: #e8eaed !important;
+      filter: none !important;
+    }
+
+    /* Zona în care scrii: culorile inline închise (semnătură, text lipit dintr-un
+       alt client) le deschidem hex-agnostic, ca în vechile secțiuni 41/42.
+       `:not(.gmail_quote *)` ține regula în afara citatului, unde inversiunea de
+       mai jos face treaba și un `color` forțat ar ieși pe dos. */
+    .editable [style*="color"]:not(.gmail_quote):not(.gmail_quote *):not(a) {
+      color: #e8eaed !important;
+    }
+    .editable [style*="background"]:not(.gmail_quote):not(.gmail_quote *) {
+      background-color: transparent !important;
+    }
+    .editable a:not(.gmail_quote *) { color: #8ab4f8 !important; }
+
+    /* Citatul mailului la care răspunzi + tot ce Gmail atașează sub el:
+       inversiune identică cu secțiunea 1. `background-color:#ffffff` e valoarea
+       de DINAINTE de filtru, care iese #1b1b1b. */
+    .editable .gmail_quote,
+    .editable blockquote.gmail_quote,
+    .editable .gmail_extra {
       background-color: #ffffff !important;
       color: #0d0d0d !important;
       filter: invert(1) hue-rotate(180deg) contrast(0.82) brightness(1.18) !important;
     }
 
-    /* Imaginile lipite, emoji-urile inserate și cele din citat ies nemodificate,
-       ca în secțiunea 1. Lista de selectoare trebuie să o oglindească EXACT pe
-       cea de mai sus: corpul de reply din firul de discuție e un
-       `.editable[role="textbox"]` fără `.Am`, deci `.Am.editable img` nu-l
-       prindea și emoji-urile din draft ieșeau negativate — spre deosebire de
-       aceleași emoji din mailul deja trimis (`.a3s`, secțiunea 1). */
-    .Am.editable img, .Am.editable video, .Am.editable canvas,
-    .Am.Al.editable img, .Am.Al.editable video, .Am.Al.editable canvas,
-    .Am.aiL.editable img, .Am.aiL.editable video, .Am.aiL.editable canvas,
-    .editable[role="textbox"] img, .editable[role="textbox"] video, .editable[role="textbox"] canvas,
-    .Ap .editable img, .Ap .editable video, .Ap .editable canvas {
+    /* imaginile din citat ies nemodificate, ca în secțiunea 1 */
+    .editable .gmail_quote img, .editable .gmail_quote video, .editable .gmail_quote canvas,
+    .editable .gmail_extra img, .editable .gmail_extra video, .editable .gmail_extra canvas {
       filter: brightness(0.847) contrast(1.22) hue-rotate(180deg) invert(1) !important;
     }
+
+  }
 
   }
 
