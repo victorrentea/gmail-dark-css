@@ -1,8 +1,8 @@
 /* ==UserStyle==
 @name        Gmail dark mode CSS
 @namespace   github.com/victorrentea
-@version     1.23.0
-@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body no longer flattened to one grey: it is now lightness-inverted the way the Gmail Android app does it (invert + hue-rotate, calibrated against the phone to #1b1b1b background / #ffffff text), so an email keeps its own colours and no background can ever survive under light text; search highlight left to the inversion inside the body and restored to Gmail yellow + dark text in the chrome; the compose/reply body inverted the same way, retiring the four successive whitelists of dark inline colours (sections 32, 40, 41, 42) that existed only to fight it
+@version     1.24.0
+@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body no longer flattened to one grey: it is now lightness-inverted the way the Gmail Android app does it (invert + hue-rotate, calibrated against the phone to #1b1b1b background / #ffffff text), so an email keeps its own colours and no background can ever survive under light text; search highlight left to the inversion inside the body and restored to Gmail yellow + dark text in the chrome; the compose/reply body inverted the same way, retiring the four successive whitelists of dark inline colours (sections 32, 40, 41, 42) that existed only to fight it + emoji/images in an inline reply body no longer negated: the counter-filter selector list now mirrors the inverted-body list (a threaded reply body is `.editable[role="textbox"]` without `.Am`)
 @author      Victor
 ==/UserStyle== */
 
@@ -479,8 +479,17 @@
       filter: invert(1) hue-rotate(180deg) contrast(0.82) brightness(1.18) !important;
     }
 
-    /* imaginile lipite și cele din citat ies nemodificate, ca în secțiunea 1 */
-    .Am.editable img, .Am.editable video, .Am.editable canvas {
+    /* Imaginile lipite, emoji-urile inserate și cele din citat ies nemodificate,
+       ca în secțiunea 1. Lista de selectoare trebuie să o oglindească EXACT pe
+       cea de mai sus: corpul de reply din firul de discuție e un
+       `.editable[role="textbox"]` fără `.Am`, deci `.Am.editable img` nu-l
+       prindea și emoji-urile din draft ieșeau negativate — spre deosebire de
+       aceleași emoji din mailul deja trimis (`.a3s`, secțiunea 1). */
+    .Am.editable img, .Am.editable video, .Am.editable canvas,
+    .Am.Al.editable img, .Am.Al.editable video, .Am.Al.editable canvas,
+    .Am.aiL.editable img, .Am.aiL.editable video, .Am.aiL.editable canvas,
+    .editable[role="textbox"] img, .editable[role="textbox"] video, .editable[role="textbox"] canvas,
+    .Ap .editable img, .Ap .editable video, .Ap .editable canvas {
       filter: brightness(0.847) contrast(1.22) hue-rotate(180deg) invert(1) !important;
     }
 
