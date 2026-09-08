@@ -1,8 +1,8 @@
 /* ==UserStyle==
 @name        Gmail dark mode CSS
 @namespace   github.com/victorrentea
-@version     1.26.0
-@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body no longer flattened to one grey: it is now lightness-inverted the way the Gmail Android app does it (invert + hue-rotate, calibrated against the phone to #1b1b1b background / #ffffff text), so an email keeps its own colours and no background can ever survive under light text; search highlight left to the inversion inside the body and restored to Gmail yellow + dark text in the chrome; the compose/reply body inverted the same way, retiring the four successive whitelists of dark inline colours (sections 32, 40, 41, 42) that existed only to fight it + compose/reply body: the inversion was narrowed to the quoted part only, because typed emoji are colour-font GLYPHS (not images) and no CSS counter-filter can reach them — they came out negated; the area you type in is painted the classic way again (light text, lightened inline colours, blue links) + cardul „Show details" al mesajului (from/to/date/subject/mailed-by/signed-by/security) scos din alb: rămăsese fundal #fff cu valori #222, iar etichetele `.gI` erau deja gri-deschis din secțiunea 16, deci ieșeau gri pe alb
+@version     1.27.0
+@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body no longer flattened to one grey: it is now lightness-inverted the way the Gmail Android app does it (invert + hue-rotate, calibrated against the phone to #1b1b1b background / #ffffff text), so an email keeps its own colours and no background can ever survive under light text; search highlight left to the inversion inside the body and restored to Gmail yellow + dark text in the chrome; the compose/reply body inverted the same way, retiring the four successive whitelists of dark inline colours (sections 32, 40, 41, 42) that existed only to fight it + compose/reply body: the inversion was narrowed to the quoted part only, because typed emoji are colour-font GLYPHS (not images) and no CSS counter-filter can reach them — they came out negated; the area you type in is painted the classic way again (light text, lightened inline colours, blue links) + colțurile de jos ale ferestrei de compose nu mai ies pătrate: bara Send (`.aDh`) acoperea rotunjirea ferestrei, acum forma se propagă cu `border-radius: inherit` până la `.aaZ`, care taie singur (are `overflow:hidden`) + cardul „Show details" al mesajului (from/to/date/subject/mailed-by/signed-by/security) scos din alb: rămăsese fundal #fff cu valori #222, iar etichetele `.gI` erau deja gri-deschis din secțiunea 16, deci ieșeau gri pe alb
 @author      Victor
 ==/UserStyle== */
 
@@ -13,7 +13,7 @@
        getComputedStyle(document.documentElement).getPropertyValue('--vr-css-version')
      Util ca să verifici că Stylus chiar a tras ultimul push, nu că "pare că merge".
      A SE ACTUALIZA odată cu @version din header. */
-  :root { --vr-css-version: "1.26.0" !important; }
+  :root { --vr-css-version: "1.27.0" !important; }
 
   /* Compose button position */
   div.dw div.nn {
@@ -523,6 +523,28 @@
     div.ajA .ajC span.gI, div.ajA span.gI { color:#9aa0a6 !important; }   /* etichetele, mai șterse decât valorile;
        specificitate peste `.ajC span` de mai sus, altfel eticheta iese identică cu valoarea */
     div.ajA a { color:#8ab4f8 !important; }
+
+    /* === 48. COLȚURILE DE JOS ALE FERESTREI DE COMPOSE — tăiate de bara Send ===
+       Fereastra de compose (`div[role=dialog].nH.Hd`) e singurul element din lanț
+       care are `border-radius` (Gmail: 8px sus când e andocată jos, toate patru
+       când e pop-out). Tot ce e înăuntru e pictat cu colțuri drepte.
+       Până acum nu se vedea: `.aaZ` are fundalul #1b1b1d din secțiunea 10, adică
+       aproape culoarea paginii din spate, deci colțul lui drept era invizibil.
+       Bara de jos (`.aDh`, #2a2a2d din secțiunea 11) e însă vizibil mai deschisă
+       — și fiind ultimul copil, îi acoperă exact colțurile rotunjite de jos, care
+       ies pătrate și depășesc cu câțiva pixeli chenarul ferestrei.
+
+       Nu rotunjim `.aDh` direct: valoarea corectă diferă între compose andocat
+       (jos DREPT, că stă pe marginea ecranului) și pop-out (jos ROTUND), iar din
+       CSS nu poți distinge cele două stări.
+       În schimb propagăm forma ferestrei în jos cu `border-radius: inherit` prin
+       `.nH`-ul intermediar până la `.aaZ`, care are deja `overflow:hidden` de la
+       Gmail — deci de acolo încolo taie singur orice copil (inclusiv `.aDh`) pe
+       conturul real al ferestrei, oricare ar fi el. Zero valori magice. */
+    div[role="dialog"].nH.Hd > .nH,
+    div[role="dialog"].nH.Hd > .nH > .aaZ {
+      border-radius: inherit !important;
+    }
 
 
   }
