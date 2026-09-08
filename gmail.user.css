@@ -1,8 +1,8 @@
 /* ==UserStyle==
 @name        Gmail dark mode CSS
 @namespace   github.com/victorrentea
-@version     1.27.0
-@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body no longer flattened to one grey: it is now lightness-inverted the way the Gmail Android app does it (invert + hue-rotate, calibrated against the phone to #1b1b1b background / #ffffff text), so an email keeps its own colours and no background can ever survive under light text; search highlight left to the inversion inside the body and restored to Gmail yellow + dark text in the chrome; the compose/reply body inverted the same way, retiring the four successive whitelists of dark inline colours (sections 32, 40, 41, 42) that existed only to fight it + compose/reply body: the inversion was narrowed to the quoted part only, because typed emoji are colour-font GLYPHS (not images) and no CSS counter-filter can reach them — they came out negated; the area you type in is painted the classic way again (light text, lightened inline colours, blue links) + colțurile de jos ale ferestrei de compose nu mai ies pătrate: bara Send (`.aDh`) acoperea rotunjirea ferestrei, acum forma se propagă cu `border-radius: inherit` până la `.aaZ`, care taie singur (are `overflow:hidden`) + cardul „Show details" al mesajului (from/to/date/subject/mailed-by/signed-by/security) scos din alb: rămăsese fundal #fff cu valori #222, iar etichetele `.gI` erau deja gri-deschis din secțiunea 16, deci ieșeau gri pe alb
+@version     1.28.0
+@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body no longer flattened to one grey: it is now lightness-inverted the way the Gmail Android app does it (invert + hue-rotate, calibrated against the phone to #1b1b1b background / #ffffff text), so an email keeps its own colours and no background can ever survive under light text; search highlight left to the inversion inside the body and restored to Gmail yellow + dark text in the chrome; the compose/reply body inverted the same way, retiring the four successive whitelists of dark inline colours (sections 32, 40, 41, 42) that existed only to fight it + compose/reply body: the inversion was narrowed to the quoted part only, because typed emoji are colour-font GLYPHS (not images) and no CSS counter-filter can reach them — they came out negated; the area you type in is painted the classic way again (light text, lightened inline colours, blue links) + meniul „Label as"/„Move to" scos din gri-închis pe închis: numele etichetelor, „Create new"/„Manage labels" și căutarea din meniu erau lăsate de Gmail la #333, iar hover-ul (`.J-LC-JT`) la #eee + colțurile de jos ale ferestrei de compose nu mai ies pătrate: bara Send (`.aDh`) acoperea rotunjirea ferestrei, acum forma se propagă cu `border-radius: inherit` până la `.aaZ`, care taie singur (are `overflow:hidden`) + cardul „Show details" al mesajului (from/to/date/subject/mailed-by/signed-by/security) scos din alb: rămăsese fundal #fff cu valori #222, iar etichetele `.gI` erau deja gri-deschis din secțiunea 16, deci ieșeau gri pe alb
 @author      Victor
 ==/UserStyle== */
 
@@ -13,7 +13,7 @@
        getComputedStyle(document.documentElement).getPropertyValue('--vr-css-version')
      Util ca să verifici că Stylus chiar a tras ultimul push, nu că "pare că merge".
      A SE ACTUALIZA odată cu @version din header. */
-  :root { --vr-css-version: "1.27.0" !important; }
+  :root { --vr-css-version: "1.28.0" !important; }
 
   /* Compose button position */
   div.dw div.nn {
@@ -545,6 +545,28 @@
     div[role="dialog"].nH.Hd > .nH > .aaZ {
       border-radius: inherit !important;
     }
+
+    /* === 49. MENIUL „Label as" / „Move to" — text #333 pe fundal întunecat ===
+       Submeniul care se deschide din ⋮ → „Label as" (și geamănul lui, „Move to")
+       a rămas complet în afara dark mode-ului: numele etichetelor și cele două
+       acțiuni de jos veneau cu `color:#333` de la Gmail, adică gri-închis pe
+       #1f1f22 — abia se citeau. Titlul „Label as:" (`.asc`) era deja alb, ceea ce
+       făcea și mai ciudat restul.
+
+       Măsurat live în Chrome pe 8 sep 2026, cu meniul deschis:
+         `.J-LC` / `.J-LC-Jz`  (rândul de etichetă + textul lui) → rgb(51,51,51)
+         `.J-JK` / `.J-JK-Jz`  („Create new" / „Manage labels")  → rgb(51,51,51)
+         `input.bqf`           (căutarea din meniu)              → #fff / #222
+       Hover-ul e pe clasă, nu pe `:hover`: Gmail pune `.J-LC-JT` / `.J-JK-JT` cu
+       `background:#eee`, deci fără regula de mai jos textul deschis ar fi ajuns
+       alb pe alb exact pe rândul peste care stai. Aceeași culoare de hover ca
+       la `.J-N-JT` din secțiunea 11, ca meniurile să arate la fel. */
+    .J-LC, .J-LC-Jz, .J-JK, .J-JK-Jz {
+      color:#e8e8e8 !important; -webkit-text-fill-color:#e8e8e8 !important; }
+    .J-LC.J-LC-JT, .J-JK.J-JK-JT { background-color:#2a3942 !important; }
+    input.bqf {
+      background-color:#2a2a2d !important; color:#e8e8e8 !important;
+      border:1px solid #3a3a3c !important; }
 
 
   }
