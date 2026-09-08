@@ -1,8 +1,8 @@
 /* ==UserStyle==
 @name        Gmail dark mode CSS
 @namespace   github.com/victorrentea
-@version     1.31.0
-@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body no longer flattened to one grey: it is now lightness-inverted the way the Gmail Android app does it (invert + hue-rotate, calibrated against the phone to #1b1b1b background / #ffffff text), so an email keeps its own colours and no background can ever survive under light text; search highlight left to the inversion inside the body and restored to Gmail yellow + dark text in the chrome; the compose/reply body inverted the same way, retiring the four successive whitelists of dark inline colours (sections 32, 40, 41, 42) that existed only to fight it + compose/reply body: the inversion was narrowed to the quoted part only, because typed emoji are colour-font GLYPHS (not images) and no CSS counter-filter can reach them — they came out negated; the area you type in is painted the classic way again (light text, lightened inline colours, blue links) + meniul „Label as"/„Move to" scos din gri-închis pe închis: numele etichetelor, „Create new"/„Manage labels" și căutarea din meniu erau lăsate de Gmail la #333, iar hover-ul (`.J-LC-JT`) la #eee + colțurile de jos ale casetei de reply nu mai ies pătrate: bara Send (`.aDh`) acoperea `border-radius: 0 0 16px 16px` al părintelui `.aDj.ahe`, acum îl moștenește cu `border-radius: inherit`, dar numai în starea `.aDj:not(.ahe)`, când bara chiar stă pe marginea cardului — cât plutește (`.ahe`, la scroll într-un reply lung) rămâne dreptunghiulară, altfel își tăia colțurile în plin card + cardul „Show details" al mesajului (from/to/date/subject/mailed-by/signed-by/security) scos din alb: rămăsese fundal #fff cu valori #222, iar etichetele `.gI` erau deja gri-deschis din secțiunea 16, deci ieșeau gri pe alb + bannerul de nudge („Received 4 days ago. Reply?", `.bAR`) scos din alb: banda era rgb(245,245,245) peste panoul de citire închis, textul rgb(95,99,104) și „Dismiss" un albastru închis rgb(11,87,208) — acum bandă #2a2a2d, text #9aa0a6, „Dismiss" #8ab4f8
+@version     1.32.0
+@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body no longer flattened to one grey: it is now lightness-inverted the way the Gmail Android app does it (invert + hue-rotate, calibrated against the phone to #1b1b1b background / #ffffff text), so an email keeps its own colours and no background can ever survive under light text; search highlight left to the inversion inside the body and restored to Gmail yellow + dark text in the chrome; the compose/reply body inverted the same way, retiring the four successive whitelists of dark inline colours (sections 32, 40, 41, 42) that existed only to fight it + compose/reply body: the inversion was narrowed to the quoted part only, because typed emoji are colour-font GLYPHS (not images) and no CSS counter-filter can reach them — they came out negated; the area you type in is painted the classic way again (light text, lightened inline colours, blue links) + meniul „Label as"/„Move to" scos din gri-închis pe închis: numele etichetelor, „Create new"/„Manage labels" și căutarea din meniu erau lăsate de Gmail la #333, iar hover-ul (`.J-LC-JT`) la #eee + colțurile de jos ale casetei de reply nu mai ies pătrate: bara Send (`.aDh`) acoperea `border-radius: 0 0 16px 16px` al părintelui `.aDj.ahe`, acum îl moștenește cu `border-radius: inherit`, dar numai în starea `.aDj:not(.ahe)`, când bara chiar stă pe marginea cardului — cât plutește (`.ahe`, la scroll într-un reply lung) rămâne dreptunghiulară, altfel își tăia colțurile în plin card + cardul „Show details" al mesajului (from/to/date/subject/mailed-by/signed-by/security) scos din alb: rămăsese fundal #fff cu valori #222, iar etichetele `.gI` erau deja gri-deschis din secțiunea 16, deci ieșeau gri pe alb + bannerul de nudge („Received 4 days ago. Reply?", `.bAR`) scos din alb: banda era rgb(245,245,245) peste panoul de citire închis, textul rgb(95,99,104) și „Dismiss" un albastru închis rgb(11,87,208) — acum bandă #2a2a2d, text #9aa0a6, „Dismiss" #8ab4f8 + 12 goluri de dark mode găsite prin scanarea DOM-ului (secțiunile 51-62, marcate [F01]-[F12]): butonul Compose, întreaga pagină de Settings (fundal, text, tab-uri, separatoare, câmpuri, preview text-style, link-uri), panoul „Advanced search options" (card, input-uri, dropdown-uri) și rândul galben „Currently being used in 1 other location"
 @author      Victor
 ==/UserStyle== */
 
@@ -13,7 +13,7 @@
        getComputedStyle(document.documentElement).getPropertyValue('--vr-css-version')
      Util ca să verifici că Stylus chiar a tras ultimul push, nu că "pare că merge".
      A SE ACTUALIZA odată cu @version din header. */
-  :root { --vr-css-version: "1.31.0" !important; }
+  :root { --vr-css-version: "1.32.0" !important; }
 
   /* Compose button position */
   div.dw div.nn {
@@ -599,6 +599,121 @@
     .bAR { background-color:#2a2a2d !important; }
     .bAV { color:#9aa0a6 !important; }
     .bAR button, .bAR button span { color:#8ab4f8 !important; }
+
+    /* === 51. [F01] BUTONUL COMPOSE — pastilă albă în colțul stâng ===
+       Singurul element din shell rămas alb: Gmail îi dă `background:#fff` plus
+       umbra de card Material, iar eticheta la #5f6368. Pe fundalul #1b1b1d al
+       rail-ului ieșea ca un far. #2a2a2d e aceeași suprafață ridicată ca bara
+       de reply (secțiunea 6); umbra deschisă nu are sens pe întuneric, o
+       înlocuim cu un chenar subțire. Creionul e un `::before` cu sprite negru,
+       deci se inversează ca restul iconițelor (vezi secțiunea 4). */
+    .T-I.T-I-KE.L3 {
+      background-color:#2a2a2d !important; color:#e8e8e8 !important;
+      box-shadow:none !important; border:1px solid #3a3a3c !important; }
+    .T-I.T-I-KE.L3:hover { background-color:#35353a !important; }
+    .T-I.T-I-KE.L3::before { filter:invert(1) brightness(1.6) !important; }
+
+    /* === 52. [F02] SETTINGS: fundalul paginii ===
+       Toată pagina de Settings era în afara dark mode-ului — zero reguli în
+       fișier până acum (`grep settings` → 0). Panoul de conținut e
+       `.nH.r4` (rgba(255,255,255,.95)) și banda de tab-uri `.nH.fY` (#fff).
+       `.nH.ar4.v` e rădăcina view-ului de setări și există o singură dată în
+       pagină — o folosim ca ancoră pentru TOATE regulile de mai jos, ca nimic
+       să nu scape în lista de mailuri. `color-scheme:dark` rezolvă din start
+       controalele native (checkbox, radio, scrollbar) fără să le pictăm noi. */
+    .nH.ar4.v { color-scheme: dark !important; }
+    .nH.ar4.v .nH.r4, .nH.ar4.v .nH.fY, .nH.ar4.v .f1, .nH.ar4.v .fZ {
+      background-color:#1b1b1d !important; }
+
+    /* === 53. [F03] SETTINGS: textul ===
+       Gmail lasă tot textul din setări la #202124 (și etichetele de tab la
+       #616161). Cu fundalul înnegrit la secțiunea 52 ar fi devenit negru pe
+       negru, deci cele două secțiuni se aplică împreună. */
+    .nH.ar4.v, .nH.ar4.v td, .nH.ar4.v th, .nH.ar4.v b, .nH.ar4.v span,
+    .nH.ar4.v div, .nH.ar4.v label, .nH.ar4.v h2, .nH.ar4.v h3,
+    .nH.ar4.v p, .nH.ar4.v li { color:#d6d6d6 !important; }
+
+    /* === 54. [F04] SETTINGS: banda de tab-uri ===
+       Tabul activ e `.fZ`, cele inactive `.f1` — asta e singura diferență de
+       clasă (verificat: 10× `.f1` + 1× `.fZ`). Gmail marchează activul cu
+       `box-shadow: inset 0 -2px 0 rgb(26,115,232)` și text #1a73e8; ambele
+       merg pe albastrul deschis al fișierului, ca să se vadă pe închis. */
+    .nH.ar4.v .f1 a.f0 { color:#c0c0c0 !important; }
+    .nH.ar4.v .fZ a.f0 { color:#8ab4f8 !important; }
+    .nH.ar4.v .fZ { box-shadow: inset 0 -2px 0 0 #8ab4f8 !important; }
+
+    /* === 55. [F05] SETTINGS: liniile dintre rânduri ===
+       Separatoarele de tabel sunt `1px rgb(229,229,229)` — invizibile ca linii
+       „fine" pe alb, dar pe #1b1b1d ar fi ieșit dungi aproape albe. */
+    .nH.ar4.v td, .nH.ar4.v tr, .nH.ar4.v table, .nH.ar4.v .Tm.aeJ {
+      border-color: rgba(255,255,255,0.10) !important; }
+
+    /* === 56. [F06] SETTINGS: câmpuri (select / input / textarea) ===
+       Rămăseseră alb cu negru — cel mai vizibil, dropdown-ul de limbă și
+       „Show N conversations per page". `option` trebuie pictat separat, altfel
+       lista deschisă a select-ului rămâne albă. */
+    .nH.ar4.v select, .nH.ar4.v textarea, .nH.ar4.v input:not([type]),
+    .nH.ar4.v input[type="text"], .nH.ar4.v input[type="email"],
+    .nH.ar4.v input[type="password"], .nH.ar4.v input[type="search"],
+    .nH.ar4.v input[type="url"], .nH.ar4.v input[type="tel"] {
+      background-color:#2a2a2d !important; color:#e8e8e8 !important;
+      border:1px solid #4a4a4d !important; }
+    .nH.ar4.v option { background-color:#2a2a2d !important; color:#e8e8e8 !important; }
+
+    /* === 57. [F07] SETTINGS: preview-ul „Default text style" ===
+       Caseta care arată cum va arăta textul scris — `.qK` (rama) și `.qL`
+       (rândul de exemplu) — e singurul loc din setări cu fundal alb propriu,
+       deci supraviețuia și după secțiunea 52. */
+    .nH.ar4.v .qK, .nH.ar4.v .qL {
+      background-color:#1f1f22 !important; color:#d6d6d6 !important;
+      border-color:#3a3a3c !important; }
+
+    /* === 58. [F08] SETTINGS: link-uri ===
+       „Learn more", „Change language settings…", „edit"/„delete" de la filtre —
+       Gmail le lasă la albastrul vechi #1155cc / #1a73e8, prea închis pe fundal
+       întunecat. Vine DUPĂ secțiunea 53 și e mai specific (`span.sA` bate
+       `span`), altfel textul generic le-ar fi înghițit. */
+    .nH.ar4.v a, .nH.ar4.v span.sA, .nH.ar4.v .sA { color:#8ab4f8 !important; }
+
+    /* === 59. [F09] ADVANCED SEARCH: panoul alb ===
+       Panoul „Advanced search options" (săgeata din bara de căutare) e un card
+       alb de 722×442 cu text #202124 și etichete #5f6368, complet nemodat.
+       `.SK.ZF-zT` e cardul; îl aducem la #1f1f22, culoarea meniurilor din
+       secțiunile 10-11, ca să arate ca restul overlay-urilor. */
+    .SK.ZF-zT {
+      background-color:#1f1f22 !important; border:1px solid #3a3a3c !important;
+      color-scheme: dark !important; }
+    .SK.ZF-zT, .SK.ZF-zT div, .SK.ZF-zT span, .SK.ZF-zT label,
+    .SK.ZF-zT td { color:#d6d6d6 !important; }
+    /* butoanele dezactivate („Create filter" cât nu ai completat nimic) trebuie
+       să RĂMÂNĂ stinse — regula de mai sus le-ar fi făcut să pară active */
+    .SK.ZF-zT button[disabled] .mUIrbf-anl,
+    .SK.ZF-zT button[aria-disabled="true"] .mUIrbf-anl {
+      color:#9aa0a6 !important; opacity:0.6 !important; }
+
+    /* === 60. [F10] ADVANCED SEARCH: câmpurile de text ===
+       Cele șase input-uri (From/To/Subject/Includes/Doesn't have/Size) erau
+       albe cu text #222 și linie de subliniere deschisă. */
+    .SK.ZF-zT input.nr, .SK.ZF-zT input.ZH {
+      background-color:#2a2a2d !important; color:#e8e8e8 !important;
+      border-color:#4a4a4d !important; }
+
+    /* === 61. [F11] ADVANCED SEARCH: dropdown-urile „greater than"/„1 day" ===
+       Sunt select-uri desenate de Gmail (`.J-JN-M-I`), nu `<select>` native,
+       deci nu le atinge nici `color-scheme`, nici secțiunea 56. Săgeata lor e
+       un sprite negru, ca la restul iconițelor. */
+    .SK.ZF-zT .J-JN-M-I, .SK.ZF-zT .J-JN-M-I-Jm, .SK.ZF-zT .aQi, .SK.ZF-zT .aab {
+      color:#e8e8e8 !important; }
+    .SK.ZF-zT .J-JN-M-I .J-J5-Ji::after, .SK.ZF-zT .J-JN-SM-I-Jm {
+      filter:invert(1) brightness(1.6) !important; }
+
+    /* === 62. [F12] „Currently being used in 1 other location" ===
+       Rândul de activitate a contului din subsolul panoului de citire vine cu
+       highlight galben Gmail (#fff1a8) și text #222 — o pată deschisă în
+       colțul de jos. Îl ducem pe cărămiziul închis folosit deja la
+       search-highlight, cu text cald deschis. */
+    span.l7 { background-color:#4a3b1a !important; color:#f0d9a0 !important; }
+
 
 
   }
