@@ -1,8 +1,8 @@
 /* ==UserStyle==
 @name        Gmail dark mode CSS
 @namespace   github.com/victorrentea
-@version     1.30.0
-@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body no longer flattened to one grey: it is now lightness-inverted the way the Gmail Android app does it (invert + hue-rotate, calibrated against the phone to #1b1b1b background / #ffffff text), so an email keeps its own colours and no background can ever survive under light text; search highlight left to the inversion inside the body and restored to Gmail yellow + dark text in the chrome; the compose/reply body inverted the same way, retiring the four successive whitelists of dark inline colours (sections 32, 40, 41, 42) that existed only to fight it + compose/reply body: the inversion was narrowed to the quoted part only, because typed emoji are colour-font GLYPHS (not images) and no CSS counter-filter can reach them — they came out negated; the area you type in is painted the classic way again (light text, lightened inline colours, blue links) + meniul „Label as"/„Move to" scos din gri-închis pe închis: numele etichetelor, „Create new"/„Manage labels" și căutarea din meniu erau lăsate de Gmail la #333, iar hover-ul (`.J-LC-JT`) la #eee + colțurile de jos ale casetei de reply nu mai ies pătrate: bara Send (`.aDh`) acoperea `border-radius: 0 0 16px 16px` al părintelui `.aDj.ahe`, acum îl moștenește cu `border-radius: inherit`, dar numai în starea `.aDj:not(.ahe)`, când bara chiar stă pe marginea cardului — cât plutește (`.ahe`, la scroll într-un reply lung) rămâne dreptunghiulară, altfel își tăia colțurile în plin card + cardul „Show details" al mesajului (from/to/date/subject/mailed-by/signed-by/security) scos din alb: rămăsese fundal #fff cu valori #222, iar etichetele `.gI` erau deja gri-deschis din secțiunea 16, deci ieșeau gri pe alb
+@version     1.31.0
+@description Gmail dark mode (rows, content, compose, chips, menus, toolbar, contact card) + gray stars + yellow attachment + attachment download text + hide right panel + shortcut hints + formatting-toolbar/inbox-hover/compose-pane fixes + explicit inline-color fixes in compose body + compose From/To/Cc/Bcc label fix + Inbox chip gray bg + white x + "Summarise this email" pill styled like Reply/Forward + reaction/emoji button more visible + compose formatting-toolbar icons/dropdown-arrows recolored + light-mode unread-row text darkened (fix white-on-light-blue) + calendar-invite panel dark bg/text + compose body dark-grey inline colors (#202124 & Google grey family) lightened, links kept blue + compose body: any inline `color` on the top-level wrapper lightened, hex-agnostic (fixes #1a1a1a & any future near-black) + explicit white-background containers keep dark text in hex notation too + search-highlight (span.il) recolored from Gmail yellow to dark brick with warm light text (was light-on-light, unreadable) + smart-action chips in the message header ("Add to Calendar") recolored from a white pill to the same dark slate as the "Summarise this email" pill, icon included + --vr-css-version probe for verifying which version is live + message body no longer flattened to one grey: it is now lightness-inverted the way the Gmail Android app does it (invert + hue-rotate, calibrated against the phone to #1b1b1b background / #ffffff text), so an email keeps its own colours and no background can ever survive under light text; search highlight left to the inversion inside the body and restored to Gmail yellow + dark text in the chrome; the compose/reply body inverted the same way, retiring the four successive whitelists of dark inline colours (sections 32, 40, 41, 42) that existed only to fight it + compose/reply body: the inversion was narrowed to the quoted part only, because typed emoji are colour-font GLYPHS (not images) and no CSS counter-filter can reach them — they came out negated; the area you type in is painted the classic way again (light text, lightened inline colours, blue links) + meniul „Label as"/„Move to" scos din gri-închis pe închis: numele etichetelor, „Create new"/„Manage labels" și căutarea din meniu erau lăsate de Gmail la #333, iar hover-ul (`.J-LC-JT`) la #eee + colțurile de jos ale casetei de reply nu mai ies pătrate: bara Send (`.aDh`) acoperea `border-radius: 0 0 16px 16px` al părintelui `.aDj.ahe`, acum îl moștenește cu `border-radius: inherit`, dar numai în starea `.aDj:not(.ahe)`, când bara chiar stă pe marginea cardului — cât plutește (`.ahe`, la scroll într-un reply lung) rămâne dreptunghiulară, altfel își tăia colțurile în plin card + cardul „Show details" al mesajului (from/to/date/subject/mailed-by/signed-by/security) scos din alb: rămăsese fundal #fff cu valori #222, iar etichetele `.gI` erau deja gri-deschis din secțiunea 16, deci ieșeau gri pe alb + bannerul de nudge („Received 4 days ago. Reply?", `.bAR`) scos din alb: banda era rgb(245,245,245) peste panoul de citire închis, textul rgb(95,99,104) și „Dismiss" un albastru închis rgb(11,87,208) — acum bandă #2a2a2d, text #9aa0a6, „Dismiss" #8ab4f8
 @author      Victor
 ==/UserStyle== */
 
@@ -13,7 +13,7 @@
        getComputedStyle(document.documentElement).getPropertyValue('--vr-css-version')
      Util ca să verifici că Stylus chiar a tras ultimul push, nu că "pare că merge".
      A SE ACTUALIZA odată cu @version din header. */
-  :root { --vr-css-version: "1.30.0" !important; }
+  :root { --vr-css-version: "1.31.0" !important; }
 
   /* Compose button position */
   div.dw div.nn {
@@ -573,6 +573,32 @@
     input.bqf {
       background-color:#2a2a2d !important; color:#e8e8e8 !important;
       border:1px solid #3a3a3c !important; }
+
+    /* === 50. BANNERUL DE NUDGE („Received 4 days ago. Reply?") === */
+    /* Fâșia pe care Gmail o pune deasupra mesajului când un thread așteaptă
+       răspuns rămăsese complet albă: măsurat live în Chrome pe 8 sep 2026, pe
+       thread-ul nudge-uit, Gmail o pictează cu
+         `.bAR`  → background-color: rgb(245,245,245)   (banda)
+         `.bAV`  → color: rgb(95,99,104)                (textul „Received … Reply?")
+         `.mUIrbf-anl` → color: rgb(11,87,208)          (eticheta butonului „Dismiss")
+       Adică o bandă aproape albă lipită peste panoul de citire #1b1b1d, cu un
+       albastru închis pe ea — exact combinația pe care restul fișierului o
+       corectează peste tot.
+
+       #2a2a2d e aceeași „suprafață ridicată" ca la bara de reply (secțiunea 6)
+       și la chip-ul Inbox (secțiunea 23), deci banda se citește ca un strat
+       peste shell, nu ca o gaură în el. Textul merge pe #9aa0a6 — griul
+       secundar deja folosit la `.go`/`.g3` din secțiunea 3 — ca să rămână
+       vizibil secundar față de subiect, nu să concureze cu el.
+
+       „Dismiss" e un buton GM3, nu un `<a>`: eticheta stă într-un
+       `span.mUIrbf-anl` dintr-un `button.mUIrbf-I`, iar `.bAR` e ancora care
+       ține regula strict în banner (clasele `mUIrbf-*` sunt generice Google și
+       apar și în alte butoane din Gmail). #8ab4f8 e albastrul deschis folosit
+       deja la bordura mesajului selectat (secțiunea 0). */
+    .bAR { background-color:#2a2a2d !important; }
+    .bAV { color:#9aa0a6 !important; }
+    .bAR button, .bAR button span { color:#8ab4f8 !important; }
 
 
   }
