@@ -1189,16 +1189,16 @@
 
   /* Agrafa de atașament stătea în dreapta, lângă dată (`td.yf`), unde oricum dispare la hover
      sub bara de acțiuni. Celula rămâne în DOM cu lățime 0, iar iconița e scoasă absolut și
-     pusă la capătul coloanei de expeditor (200px de la 87px), chiar înaintea subiectului;
-     numele expeditorului lasă loc (padding-right) doar pe rândurile cu atașament. */
+     pusă la capătul coloanei de expeditor (la 200px; numele se oprește oricum la 168px, sub
+     padding-ul Gmail de 32px), chiar înaintea subiectului. Padding-ul expeditorului NU se
+     atinge: celula e content-box, deci orice schimbare îi mută lățimea și subiectul sare. */
   tr.zA > td.yf { display:flex !important; width:0 !important; padding:0 !important; overflow:visible !important; }
   tr.zA > td.yf > img.yE { position:absolute !important; left:200px !important; top:50% !important; transform:translateY(-50%); z-index:1; }
-  tr.zA:has(> td.yf > img.yE) > td.yX { padding-right:22px !important; }
 
   /* Sidebar strâns (54px): iconițele erau la 26px (margin 24 + padding 2) fiindcă secțiunea 79
      ținea scurtătura în stânga lor. Acum iconița de 20px stă la 17px, centrată, la fel „+"-ul și
      Compose (36px cu rame → margin 1px peste padding-ul de 8). Scurtătura devine o bulă îngroșată de 11px, lipită de marginea
-     din stânga, suprapusă pe colțul din stânga-sus al iconiței — nu mai împinge nimic. Rotița „Manage labels" stătea strâmb lângă
+     din stânga, centrată vertical pe iconiță — nu mai împinge nimic. Rotița „Manage labels" stătea strâmb lângă
      „+": ascunsă cât sidebar-ul e strâns (rămâne în cel desfăcut). */
   .bhZ:not(.bym) .TK > .aim .TO { margin-left:15px !important; }
   .aeN.bhZ:not(.bym) .aAw { padding-left:17px !important; }   /* .aeN și .bhZ sunt același element */
@@ -1209,8 +1209,7 @@
     font-size:11px; font-weight:700; letter-spacing:.3px; color:#c4c7c5; background:#2f3134;
     box-shadow:0 0 0 1px #1b1b1b; text-align:center; display:block; z-index:2;
   }
-  .TK > .aim::before { left:0; top:-3px; }
-  .aeN .z0::before { left:0; top:-1px; bottom:auto; }
+  .TK > .aim::before, .aeN .z0::before { left:0; top:50%; bottom:auto; transform:translateY(-50%); }
 
   /* Ordinea din sidebar: All Mail și Bin sunt scoase din „More" din Settings → Labels („show"),
      dar Gmail le pune Drafts → All Mail → Spam → Bin. Rândurile `.aim` sunt frați în `.TK`,
