@@ -54,3 +54,8 @@ Public on purpose — Stylus cannot send credentials, so a private repo's raw UR
 of anything sensitive; it is only Gmail class selectors and colour values.
 
 Versions 1.0.0 → 1.15.0 were developed in the private `victorrentea/ai` repo; that history stays there.
+
+## Memoria lui Claude
+
+Memoria generală (cine e Victor, cum vrea să lucrezi) e în repo-ul privat `victorrentea/assistant`.
+Într-o sesiune din cloud, atașează-l la sesiune și urmează-i `CLAUDE.md`-ul. Pe Mac se încarcă singură.
